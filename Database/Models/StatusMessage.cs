@@ -1,0 +1,19 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Joebot_Backend.Database.Models
+{
+    public class StatusMessage
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Id { get; set; }
+
+        [Required]
+        public string? Status { get; set; }
+
+        [Required]
+        public int Type { get; set; }
+
+        public virtual Configuration Configuration { get; set; }
+    }
+}
