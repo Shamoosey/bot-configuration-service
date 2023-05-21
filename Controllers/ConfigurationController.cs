@@ -1,4 +1,4 @@
-using Joebot_Backend.Database.DTOs;
+using Joebot_Backend.DTOs;
 using Joebot_Backend.Services;
 using Microsoft.AspNetCore.Mvc;
 

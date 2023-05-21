@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Joebot_Backend.Database;
-using Joebot_Backend.Database.DTOs;
 using Joebot_Backend.Database.Models;
+using Joebot_Backend.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
@@ -33,7 +33,6 @@ namespace Joebot_Backend.Services
                 }
 
                 List<User> users = _mapper.Map<List<UserDTO>, List<User>>(configuration.Users);
-                List<StatusMessage> statusMessages = _mapper.Map<List<StatusMessageDTO>, List<StatusMessage>>(configuration.StatusMessages);
                 List<Trigger> triggers = new List<Trigger>();
                 
                 foreach (TriggerDTO triggerDto in configuration.Triggers)
@@ -50,7 +49,6 @@ namespace Joebot_Backend.Services
 
                 mappedConfig.Triggers = triggers;
                 mappedConfig.Users = users;
-                mappedConfig.StatusMessages = statusMessages;
 
                 await _joeContext.Configurations.AddAsync( mappedConfig );
                 await _joeContext.SaveChangesAsync();

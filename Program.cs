@@ -10,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IConfigurationService, ConfigurationService>();
+builder.Services.AddTransient<IStatusService, StatusService>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddSingleton<IMapper>(p => new MapperConfiguration(cfg => {
