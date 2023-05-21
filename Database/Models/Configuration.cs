@@ -17,7 +17,6 @@ namespace Joebot_Backend.Database.Models
         [Required]
         public string DefaultChannel { get; set; }
 
-
         public bool EnableKickCache { get; set; }
 
         public int KickCacheDays { get; set; }
@@ -31,7 +30,7 @@ namespace Joebot_Backend.Database.Models
         public string KickUserMessage { get; set; }
 
         public virtual ICollection<User> Users { get; set; }
+
         public virtual ICollection<Trigger> Triggers { get; set; }
-        public virtual ICollection<StatusMessage> StatusMessages { get; set; }
     }
 }

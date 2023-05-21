@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Joebot_Backend.Database.Models
+namespace Joebot_Backend.Database
 {
     /// <inheritdoc />
     public partial class InitialMigration : Migration
@@ -24,7 +24,7 @@ namespace Joebot_Backend.Database.Models
                     KickCacheHours = table.Column<int>(type: "int", nullable: false),
                     KickCacheServerMessage = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     KickServerMessage = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    KickedUserMessage = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    KickUserMessage = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -37,18 +37,11 @@ namespace Joebot_Backend.Database.Models
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    ConfigurationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Type = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_StatusMessages", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_StatusMessages_Configurations_ConfigurationId",
-                        column: x => x.ConfigurationId,
-                        principalTable: "Configurations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -154,11 +147,6 @@ namespace Joebot_Backend.Database.Models
                 name: "IX_ReactEmote_TriggerId",
                 table: "ReactEmote",
                 column: "TriggerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_StatusMessages_ConfigurationId",
-                table: "StatusMessages",
-                column: "ConfigurationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TriggerResponses_TriggerId",

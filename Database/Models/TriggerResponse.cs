@@ -12,6 +12,5 @@ namespace Joebot_Backend.Database.Models
         public string Value { get; set; }
 
         public virtual Trigger Trigger { get; set; }
-
     }
 }

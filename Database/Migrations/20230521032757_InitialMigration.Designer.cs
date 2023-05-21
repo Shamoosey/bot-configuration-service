@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Joebot_Backend.Database.Models
+namespace Joebot_Backend.Database
 {
     [DbContext(typeof(JoeContext))]
-    [Migration("20230510001827_InitialMigration")]
+    [Migration("20230521032757_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -52,7 +52,7 @@ namespace Joebot_Backend.Database.Models
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("KickedUserMessage")
+                    b.Property<string>("KickUserMessage")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -95,9 +95,6 @@ namespace Joebot_Backend.Database.Models
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ConfigurationId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -106,8 +103,6 @@ namespace Joebot_Backend.Database.Models
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ConfigurationId");
 
                     b.ToTable("StatusMessages");
                 });
@@ -215,17 +210,6 @@ namespace Joebot_Backend.Database.Models
                     b.Navigation("Trigger");
                 });
 
-            modelBuilder.Entity("Joebot_Backend.Database.Models.StatusMessage", b =>
-                {
-                    b.HasOne("Joebot_Backend.Database.Models.Configuration", "Configuration")
-                        .WithMany("StatusMessages")
-                        .HasForeignKey("ConfigurationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Configuration");
-                });
-
             modelBuilder.Entity("Joebot_Backend.Database.Models.Trigger", b =>
                 {
                     b.HasOne("Joebot_Backend.Database.Models.Configuration", "Configuration")
@@ -272,8 +256,6 @@ namespace Joebot_Backend.Database.Models
 
             modelBuilder.Entity("Joebot_Backend.Database.Models.Configuration", b =>
                 {
-                    b.Navigation("StatusMessages");
-
                     b.Navigation("Triggers");
 
                     b.Navigation("Users");

@@ -13,7 +13,5 @@ namespace Joebot_Backend.Database.Models
 
         [Required]
         public int Type { get; set; }
-
-        public virtual Configuration Configuration { get; set; }
     }
 }

@@ -16,8 +16,11 @@ namespace Joebot_Backend.Database.Models
         public bool IgnoreCooldown { get; set; }
 
         public virtual Configuration Configuration { get; set; }
+
         public virtual ICollection<TriggerWord> TriggerWords { get; set; }
+
         public virtual ICollection<ReactEmote> ReactEmotes { get; set; }
+
         public virtual ICollection<TriggerResponse> TriggerResponses { get; set; }
     }
 }

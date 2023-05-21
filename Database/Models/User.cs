@@ -7,11 +7,15 @@ namespace Joebot_Backend.Database.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
+
         public bool IsSecert { get; set; } = false;
+
         [Required]
         public string UserName { get; set; }
+
         [Required]
         public string DiscordUserId { get; set; }
+
         public virtual Configuration Configuration { get; set; }
     }
 }
