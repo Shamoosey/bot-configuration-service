@@ -1,9 +1,7 @@
 ﻿namespace Joebot_Backend.DTOs
 {
-    public class TriggerDTO
+    public class EditTriggerDTO
     {
-
-        public Guid? Id { get; set; }
         public bool MessageDelete { get; set; }
         public bool SendRandomResponse { get; set; }
         public bool IgnoreCooldown { get; set; }
