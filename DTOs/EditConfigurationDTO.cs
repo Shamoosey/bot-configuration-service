@@ -1,11 +1,7 @@
-﻿using System.Text.Json.Serialization;
-
-namespace Joebot_Backend.DTOs
+﻿namespace Joebot_Backend.DTOs
 {
-    public class ConfigurationDTO
+    public class EditConfigurationDTO
     {
-        public Guid? Id { get; set; }
-        public string ServerId { get; set; }
         public string Name { get; set; }
         public string DefaultChannel { get; set; }
         public bool EnableKickCache { get; set; }
