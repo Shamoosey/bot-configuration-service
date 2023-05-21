@@ -23,16 +23,34 @@ namespace Joebot_Backend.Controllers
             return await _statusService.GetStatusMessages();
         }
 
-        [HttpDelete]
-        public async Task<bool> DeleteStatus(Guid statusId, CancellationToken cancellationToken)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteStatus(Guid id, CancellationToken cancellationToken)
         {
-            return await this._statusService.DeleteStatusMessage(statusId);
+            var result = await this._statusService.DeleteStatusMessage(id);
+
+            if(result)
+            {
+                return Ok();
+            } 
+            else
+            {
+                return NotFound();
+            }
         }
 
         [HttpPost]
-        public async Task<bool> CreateStatusMessage(StatusMessageDTO status, CancellationToken cancellationToken)
+        public async Task<ActionResult> CreateStatusMessage(string statusMessage, int statusType, CancellationToken cancellationToken)
         {
-            return await this._statusService.CreateStatusMessage(status);
+            var result = await this._statusService.CreateStatusMessage(statusMessage, statusType);
+
+            if(result)
+            {
+                return Ok();
+            } 
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }

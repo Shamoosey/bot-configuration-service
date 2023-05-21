@@ -2,7 +2,7 @@
 {
     public class StatusMessageDTO
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
         public string? Status { get; set; }
         public int Type { get; set; }
     }
