@@ -45,7 +45,7 @@ namespace Joebot_Backend.Services
             return result;
         }
 
-        public async Task<bool> UpdateConfiguration(string serverId, EditConfigurationDTO configuration)
+        public async Task<bool> UpdateConfiguration(string serverId, ConfigurationDTO configuration)
         {
             bool result = false;
             try
@@ -68,7 +68,7 @@ namespace Joebot_Backend.Services
             return result;
         }
 
-        public async Task<JoeConfigDTO> GetConfiguration(string serverId)
+        public async Task<ConfigurationDTO> GetConfiguration(string serverId)
         {
             var configuration = await _joeContext.Configurations
                 .Include(c => c.Users)
@@ -77,7 +77,19 @@ namespace Joebot_Backend.Services
                 .Include(c => c.Triggers).ThenInclude(x => x.ReactEmotes)
                 .FirstOrDefaultAsync(c => c.ServerId == serverId);
 
-            return _mapper.Map<JoeConfigDTO>(configuration);
+            return _mapper.Map<ConfigurationDTO>(configuration);
+        }
+
+        public async Task<IEnumerable<ConfigurationDTO>> GetAllConfigurations()
+        {
+            var configuration = await _joeContext.Configurations
+                .Include(c => c.Users)
+                .Include(c => c.Triggers).ThenInclude(x => x.TriggerResponses)
+                .Include(c => c.Triggers).ThenInclude(x => x.TriggerWords)
+                .Include(c => c.Triggers).ThenInclude(x => x.ReactEmotes)
+                .ToListAsync();
+
+            return _mapper.Map<IEnumerable<ConfigurationDTO>>(configuration);
         }
 
         public async Task<bool> DeleteConfiguration(string serverId)
@@ -107,8 +119,9 @@ namespace Joebot_Backend.Services
 
     public interface IConfigurationService
     {
-        Task<JoeConfigDTO> GetConfiguration(string serverId);
-        Task<bool> UpdateConfiguration(string serverId, EditConfigurationDTO configuration);
+        Task<IEnumerable<ConfigurationDTO>> GetAllConfigurations();
+        Task<ConfigurationDTO> GetConfiguration(string serverId);
+        Task<bool> UpdateConfiguration(string serverId, ConfigurationDTO configuration);
         Task<bool> CreateConfiguration(ConfigurationDTO configuration);
         Task<bool> DeleteConfiguration(string serverId);
     }

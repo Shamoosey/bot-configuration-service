@@ -12,7 +12,8 @@ namespace Joebot_Backend.DTOs
         public int KickCacheDays { get; set; }
         public int KickCacheHours { get; set; }
         public string KickCacheServerMessage { get; set; }
-        public string KickServerMessage { get; set; }
-        public string KickUserMessage { get; set; }
+        public string KickCacheUserMessage { get; set; }
+        public virtual List<UserDTO> Users { get; set; }
+        public virtual List<TriggerDTO> Triggers { get; set; }
     }
 }

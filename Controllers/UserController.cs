@@ -48,7 +48,7 @@ namespace Joebot_Backend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateUser(EditUserDTO user, string serverId, CancellationToken cancellationToken)
+        public async Task<ActionResult> CreateUser(UserDTO user, string serverId, CancellationToken cancellationToken)
         {
             var result = await this._userService.CreateUser(user, serverId);
 
@@ -63,7 +63,7 @@ namespace Joebot_Backend.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateUser(Guid userId, EditUserDTO userDto, CancellationToken cancellationToken)
+        public async Task<ActionResult> UpdateUser(Guid userId, UserDTO userDto, CancellationToken cancellationToken)
         {
             var result = await this._userService.UpdateUser(userId, userDto);
 

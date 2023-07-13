@@ -20,10 +20,18 @@ namespace Joebot_Backend.Controllers
             _configurationService = configurationService;
         }
 
+        [Route("Get")]
         [HttpGet]
-        public async Task<JoeConfigDTO?> GetConfiguration(string serverId, CancellationToken cancellationToken)
+        public async Task<ConfigurationDTO?> GetConfiguration(string serverId, CancellationToken cancellationToken)
         {
             return await this._configurationService.GetConfiguration(serverId);
+        }
+
+        [Route("GetAll")]
+        [HttpGet]
+        public async Task<IEnumerable<ConfigurationDTO>> GetConfigurations(CancellationToken cancellationToken)
+        {
+            return await this._configurationService.GetAllConfigurations();
         }
 
         [HttpPost]
@@ -42,7 +50,7 @@ namespace Joebot_Backend.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateConfiguration(string id, EditConfigurationDTO configuration, CancellationToken cancellationToken)
+        public async Task<ActionResult> UpdateConfiguration(string id, ConfigurationDTO configuration, CancellationToken cancellationToken)
         {
             var result = await this._configurationService.UpdateConfiguration(id, configuration);
 

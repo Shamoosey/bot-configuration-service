@@ -47,9 +47,9 @@ namespace Joebot_Backend.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateTrigger(Guid triggerId, EditTriggerDTO editTriggerDto, CancellationToken cancellationToken)
+        public async Task<ActionResult> UpdateTrigger(Guid triggerId, TriggerDTO TriggerDTO, CancellationToken cancellationToken)
         {
-            var result = await this._triggerService.UpdateTrigger(triggerId, editTriggerDto);
+            var result = await this._triggerService.UpdateTrigger(triggerId, TriggerDTO);
 
             if (result)
             {
@@ -62,7 +62,7 @@ namespace Joebot_Backend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateTrigger(string serverId, EditTriggerDTO trigger, CancellationToken cancellationToken)
+        public async Task<ActionResult> CreateTrigger(string serverId, TriggerDTO trigger, CancellationToken cancellationToken)
         {
             var result = await this._triggerService.CreateTrigger(serverId, trigger);
 

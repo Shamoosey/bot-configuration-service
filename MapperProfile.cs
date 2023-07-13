@@ -8,7 +8,7 @@ namespace Joebot_Backend
     {
         public MappingProfile()
         {
-            CreateMap<Configuration, JoeConfigDTO>()
+            CreateMap<Configuration, ConfigurationDTO>()
                 .ForMember(dest => dest.Users, opt => opt.MapFrom(src => src.Users))
                 .ForMember(dest => dest.Triggers, opt => opt.MapFrom(src => src.Triggers))
                 .ReverseMap();
@@ -16,11 +16,9 @@ namespace Joebot_Backend
             CreateMap<ConfigurationDTO, Configuration>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
 
-            CreateMap<EditConfigurationDTO, Configuration>();
-
             CreateMap<StatusMessage, StatusMessageDTO>();
 
-            CreateMap<EditUserDTO, User>().ReverseMap();
+            CreateMap<UserDTO, User>().ReverseMap();
 
             CreateMap<User, UserDTO>();
 
@@ -35,7 +33,7 @@ namespace Joebot_Backend
             CreateMap<TriggerDTO, Trigger>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
 
-            CreateMap<EditTriggerDTO, Trigger>();
+            CreateMap<TriggerDTO, Trigger>();
 
             CreateMap<string, TriggerWord>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))

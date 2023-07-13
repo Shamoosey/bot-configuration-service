@@ -17,7 +17,7 @@ namespace Joebot_Backend.Services
             _mapper = mapper;
         }
 
-        public async Task<bool> CreateUser(EditUserDTO userDto, string serverId)
+        public async Task<bool> CreateUser(UserDTO userDto, string serverId)
         {
             bool result = false;
             try
@@ -47,7 +47,7 @@ namespace Joebot_Backend.Services
         }
 
 
-        public async Task<bool> UpdateUser(Guid userId, EditUserDTO userDto)
+        public async Task<bool> UpdateUser(Guid userId, UserDTO userDto)
         {
             bool result = false;
             try
@@ -143,8 +143,8 @@ namespace Joebot_Backend.Services
 
     public interface IUserService
     {
-        public Task<bool> CreateUser(EditUserDTO User, string serverId);
-        public Task<bool> UpdateUser(Guid userId, EditUserDTO User);
+        public Task<bool> CreateUser(UserDTO User, string serverId);
+        public Task<bool> UpdateUser(Guid userId, UserDTO User);
         public Task<bool> DeleteUser(Guid userId);
         public Task<UserDTO> GetUser(Guid userId);
         public Task<List<UserDTO>> GetUsers(string serverId);
