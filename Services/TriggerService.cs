@@ -18,7 +18,7 @@ namespace Joebot_Backend.Services
             _mapper = mapper;
         }
 
-        public async Task<bool> CreateTrigger(string serverId, EditTriggerDTO Trigger)
+        public async Task<bool> CreateTrigger(string serverId, TriggerDTO Trigger)
         {
             bool result = false;
             try
@@ -30,7 +30,7 @@ namespace Joebot_Backend.Services
                     throw new Exception($"No configuration associated with serverId: {serverId}");
                 }
 
-                var triggerEntity = _mapper.Map<EditTriggerDTO, Trigger>(Trigger);
+                var triggerEntity = _mapper.Map<TriggerDTO, Trigger>(Trigger);
                 var reactEmotes = _mapper.Map<List<ReactEmote>>(Trigger.ReactEmotes);
                 var triggerWords = _mapper.Map<List<TriggerWord>>(Trigger.TriggerWords);
                 var triggerResponses = _mapper.Map<List<TriggerResponse>>(Trigger.TriggerResponses);
@@ -55,7 +55,7 @@ namespace Joebot_Backend.Services
             return result;
         }
 
-        public async Task<bool> UpdateTrigger(Guid id, EditTriggerDTO editTrigger)
+        public async Task<bool> UpdateTrigger(Guid id, TriggerDTO editTrigger)
         {
             bool result = false;
             try
@@ -205,9 +205,9 @@ namespace Joebot_Backend.Services
 
     public interface ITriggerService
     {
-        public Task<bool> CreateTrigger(string serverId, EditTriggerDTO Trigger);
+        public Task<bool> CreateTrigger(string serverId, TriggerDTO Trigger);
         public Task<bool> DeleteTrigger(Guid id);
-        public Task<bool> UpdateTrigger(Guid id, EditTriggerDTO editTriggerDto);
+        public Task<bool> UpdateTrigger(Guid id, TriggerDTO TriggerDTO);
         public Task<List<TriggerDTO>> GetTriggers(string serverId);
         public Task<TriggerDTO> GetTrigger(Guid id);
     }

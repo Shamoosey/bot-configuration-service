@@ -25,9 +25,7 @@ namespace Joebot_Backend.Database.Models
 
         public string KickCacheServerMessage { get; set; }
 
-        public string KickServerMessage { get; set; }
-
-        public string KickUserMessage { get; set; }
+        public string KickCacheUserMessage { get; set; }
 
         public virtual ICollection<User> Users { get; set; }
 

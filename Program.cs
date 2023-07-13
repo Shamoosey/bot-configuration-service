@@ -14,27 +14,45 @@ builder.Services.AddTransient<IStatusService, StatusService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ITriggerService, TriggerService>();
 
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(builder.Environment.ContentRootPath)
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .Build();
+
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddSingleton<IMapper>(p => new MapperConfiguration(cfg => {
     cfg.AddProfile(new MappingProfile());
 }).CreateMapper());
 
 builder.Services.AddDbContext<JoeContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
+    options.UseSqlServer(configuration["ConnectionStrings:DefaultConnection"]
 ));
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularFrontend",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:4200")
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(x => x.SwaggerEndpoint("/swagger/v1/swagger.json", "Configuration Service v1"));
 }
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseCors("AllowAngularFrontend");
 
+app.MapControllers();
 app.Run();
