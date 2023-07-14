@@ -1,11 +1,11 @@
-﻿using Joebot_Backend.Database.Models;
+﻿using DiscordBot_Backend.Database.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Joebot_Backend.Database
+namespace DiscordBot_Backend.Database
 {
-    public class JoeContext : DbContext
+    public class BotContext : DbContext
     {
-        public JoeContext(DbContextOptions<JoeContext> options) : base(options) { }
+        public BotContext(DbContextOptions<BotContext> options) : base(options) { }
 
         public virtual DbSet<Configuration> Configurations { get; set; }
         public virtual DbSet<StatusMessage> StatusMessages { get; set; }

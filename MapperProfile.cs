@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Joebot_Backend.Database.Models;
-using Joebot_Backend.DTOs;
+using DiscordBot_Backend.Database.Models;
+using DiscordBot_Backend.DTOs;
 
-namespace Joebot_Backend
+namespace DiscordBot_Backend
 {
     public class  MappingProfile : Profile
     {

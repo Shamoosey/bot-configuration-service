@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Joebot_Backend.Database.Models
+namespace DiscordBot_Backend.Database.Models
 {
     public class Trigger
     {

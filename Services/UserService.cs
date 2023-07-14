@@ -1,19 +1,19 @@
 ﻿using AutoMapper;
-using Joebot_Backend.Database;
-using Joebot_Backend.Database.Models;
-using Joebot_Backend.DTOs;
+using DiscordBot_Backend.Database;
+using DiscordBot_Backend.Database.Models;
+using DiscordBot_Backend.DTOs;
 using Microsoft.EntityFrameworkCore;
 
-namespace Joebot_Backend.Services
+namespace DiscordBot_Backend.Services
 {
     public class UserService : IUserService
     {
-        private readonly JoeContext _joeContext;
+        private readonly BotContext _botContext;
         private readonly IMapper _mapper;
 
-        public UserService(JoeContext joeContext, IMapper mapper)
+        public UserService(BotContext botContext, IMapper mapper)
         {
-            _joeContext = joeContext;
+            _botContext = botContext;
             _mapper = mapper;
         }
 
@@ -22,7 +22,7 @@ namespace Joebot_Backend.Services
             bool result = false;
             try
             {
-                var existingConfiguration = await _joeContext.Configurations.FirstOrDefaultAsync(x => x.ServerId == serverId);
+                var existingConfiguration = await _botContext.Configurations.FirstOrDefaultAsync(x => x.ServerId == serverId);
 
                 if(existingConfiguration == null) 
                 {
@@ -31,8 +31,8 @@ namespace Joebot_Backend.Services
 
                 var userEntity = _mapper.Map<User>(userDto);
                 userEntity.Configuration = existingConfiguration;
-                _joeContext.Users.Add(userEntity);
-                await _joeContext.SaveChangesAsync();
+                _botContext.Users.Add(userEntity);
+                await _botContext.SaveChangesAsync();
 
                 result = true;
             }
@@ -52,7 +52,7 @@ namespace Joebot_Backend.Services
             bool result = false;
             try
             {
-                var userEntity = await _joeContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
+                var userEntity = await _botContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
 
                 if (userEntity == null)
                 {
@@ -61,7 +61,7 @@ namespace Joebot_Backend.Services
 
 
                 _mapper.Map(userDto, userEntity);
-                await _joeContext.SaveChangesAsync();
+                await _botContext.SaveChangesAsync();
 
                 result = true;
             }
@@ -80,15 +80,15 @@ namespace Joebot_Backend.Services
             bool result = false;
             try
             {
-                var userEntity = await _joeContext.Users.FirstOrDefaultAsync(x => x.Id == id);
+                var userEntity = await _botContext.Users.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (userEntity == null)
                 {
                     throw new Exception("User does not exist");
                 }
 
-                _joeContext.Users.Remove(userEntity);
-                await _joeContext.SaveChangesAsync();
+                _botContext.Users.Remove(userEntity);
+                await _botContext.SaveChangesAsync();
 
                 result = true;
             }
@@ -107,7 +107,7 @@ namespace Joebot_Backend.Services
             UserDTO? userDto = null;
             try
             {
-                var userEntity = await _joeContext.Users.Where(x => x.Id == userId).FirstOrDefaultAsync();
+                var userEntity = await _botContext.Users.Where(x => x.Id == userId).FirstOrDefaultAsync();
 
                 if(userEntity == null)
                 {
@@ -129,7 +129,7 @@ namespace Joebot_Backend.Services
         {
             try
             {
-                var userEntities = await _joeContext.Users.Where(x => x.Configuration.ServerId == serverId).ToListAsync();
+                var userEntities = await _botContext.Users.Where(x => x.Configuration.ServerId == serverId).ToListAsync();
                 var userDtos = _mapper.Map<List<User>, List<UserDTO>>(userEntities);
 
                 return userDtos;

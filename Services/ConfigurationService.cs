@@ -1,21 +1,21 @@
 ﻿using AutoMapper;
-using Joebot_Backend.Controllers;
-using Joebot_Backend.Database;
-using Joebot_Backend.Database.Models;
-using Joebot_Backend.DTOs;
+using DiscordBot_Backend.Controllers;
+using DiscordBot_Backend.Database;
+using DiscordBot_Backend.Database.Models;
+using DiscordBot_Backend.DTOs;
 using Microsoft.EntityFrameworkCore;
 
-namespace Joebot_Backend.Services
+namespace DiscordBot_Backend.Services
 {
     public class ConfigurationService : IConfigurationService
     {
         private readonly ILogger<ConfigurationController> _logger;
-        private readonly JoeContext _joeContext;
+        private readonly BotContext _botContext;
         private readonly IMapper _mapper;
 
-        public ConfigurationService(JoeContext joeContext, IMapper mapper, ILogger<ConfigurationController> logger)
+        public ConfigurationService(BotContext botContext, IMapper mapper, ILogger<ConfigurationController> logger)
         {
-            _joeContext = joeContext;
+            _botContext = botContext;
             _mapper = mapper;
             _logger = logger;
         }
@@ -25,7 +25,7 @@ namespace Joebot_Backend.Services
             bool result = false;
             try
             {
-                var existingConfiguration = await _joeContext.Configurations.FirstOrDefaultAsync(x => x.ServerId == configuration.ServerId);
+                var existingConfiguration = await _botContext.Configurations.FirstOrDefaultAsync(x => x.ServerId == configuration.ServerId);
                 if (existingConfiguration != null)
                 {
                     throw new Exception("Configuration already exists");
@@ -33,8 +33,8 @@ namespace Joebot_Backend.Services
 
                 var newConfiguration = _mapper.Map<Configuration>(configuration);
                 newConfiguration.Id = Guid.NewGuid();
-                _joeContext.Configurations.Add(newConfiguration);
-                await _joeContext.SaveChangesAsync();
+                _botContext.Configurations.Add(newConfiguration);
+                await _botContext.SaveChangesAsync();
                 result = true;
             } catch (Exception e)
             {
@@ -50,14 +50,14 @@ namespace Joebot_Backend.Services
             bool result = false;
             try
             {
-                var existingConfiguration = await _joeContext.Configurations.FirstOrDefaultAsync(x => x.ServerId == serverId);
+                var existingConfiguration = await _botContext.Configurations.FirstOrDefaultAsync(x => x.ServerId == serverId);
                 if (existingConfiguration == null)
                 {
                     throw new Exception("Configuration doesn't exist");
                 }
 
                 _mapper.Map(configuration, existingConfiguration);
-                await _joeContext.SaveChangesAsync();
+                await _botContext.SaveChangesAsync();
                 result = true;
             } catch (Exception e)
             {
@@ -70,7 +70,7 @@ namespace Joebot_Backend.Services
 
         public async Task<ConfigurationDTO> GetConfiguration(string serverId)
         {
-            var configuration = await _joeContext.Configurations
+            var configuration = await _botContext.Configurations
                 .Include(c => c.Users)
                 .Include(c => c.Triggers).ThenInclude(x => x.TriggerResponses)
                 .Include(c => c.Triggers).ThenInclude(x => x.TriggerWords)
@@ -82,7 +82,7 @@ namespace Joebot_Backend.Services
 
         public async Task<IEnumerable<ConfigurationDTO>> GetAllConfigurations()
         {
-            var configuration = await _joeContext.Configurations
+            var configuration = await _botContext.Configurations
                 .Include(c => c.Users)
                 .Include(c => c.Triggers).ThenInclude(x => x.TriggerResponses)
                 .Include(c => c.Triggers).ThenInclude(x => x.TriggerWords)
@@ -97,14 +97,14 @@ namespace Joebot_Backend.Services
             bool result = false;
             try
             {
-                var configuration = await _joeContext.Configurations.FirstOrDefaultAsync(x => x.ServerId == serverId);
+                var configuration = await _botContext.Configurations.FirstOrDefaultAsync(x => x.ServerId == serverId);
                 if (configuration == null)
                 {
                     throw new Exception("Configuration doesn't exist");
                 }   
 
-                _joeContext.Configurations.Remove(configuration);
-                await _joeContext.SaveChangesAsync();
+                _botContext.Configurations.Remove(configuration);
+                await _botContext.SaveChangesAsync();
                 result = true;
             }             
             catch (Exception e)

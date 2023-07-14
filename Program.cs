@@ -1,7 +1,7 @@
 using AutoMapper;
-using Joebot_Backend;
-using Joebot_Backend.Database;
-using Joebot_Backend.Services;
+using DiscordBot_Backend;
+using DiscordBot_Backend.Database;
+using DiscordBot_Backend.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,7 +24,7 @@ builder.Services.AddSingleton<IMapper>(p => new MapperConfiguration(cfg => {
     cfg.AddProfile(new MappingProfile());
 }).CreateMapper());
 
-builder.Services.AddDbContext<JoeContext>(options =>
+builder.Services.AddDbContext<BotContext>(options =>
     options.UseSqlServer(configuration["ConnectionStrings:DefaultConnection"]
 ));
 

@@ -1,9 +1,9 @@
-using Joebot_Backend.Database.Models;
-using Joebot_Backend.DTOs;
-using Joebot_Backend.Services;
+using DiscordBot_Backend.Database.Models;
+using DiscordBot_Backend.DTOs;
+using DiscordBot_Backend.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Joebot_Backend.Controllers
+namespace DiscordBot_Backend.Controllers
 {
     [ApiController]
     [Route("[controller]")]

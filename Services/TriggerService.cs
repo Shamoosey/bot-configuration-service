@@ -1,20 +1,20 @@
 ﻿using AutoMapper;
-using Joebot_Backend.Database;
-using Joebot_Backend.Database.Models;
-using Joebot_Backend.DTOs;
+using DiscordBot_Backend.Database;
+using DiscordBot_Backend.Database.Models;
+using DiscordBot_Backend.DTOs;
 using Microsoft.EntityFrameworkCore;
 
-namespace Joebot_Backend.Services
+namespace DiscordBot_Backend.Services
 {
     public class TriggerService : ITriggerService
     {
         private readonly ILogger<TriggerService> _logger;
-        private readonly JoeContext _joeContext;
+        private readonly BotContext _botContext;
         private readonly IMapper _mapper;
 
-        public TriggerService(JoeContext joeContext, IMapper mapper)
+        public TriggerService(BotContext botContext, IMapper mapper)
         {
-            _joeContext = joeContext;
+            _botContext = botContext;
             _mapper = mapper;
         }
 
@@ -23,7 +23,7 @@ namespace Joebot_Backend.Services
             bool result = false;
             try
             {
-                var existingConfiguration = _joeContext.Configurations.FirstOrDefault(x => x.ServerId == serverId);
+                var existingConfiguration = _botContext.Configurations.FirstOrDefault(x => x.ServerId == serverId);
 
                 if (existingConfiguration == null) 
                 {
@@ -40,8 +40,8 @@ namespace Joebot_Backend.Services
                 triggerEntity.TriggerResponses = triggerResponses;
 
                 triggerEntity.Configuration = existingConfiguration;
-                _joeContext.Triggers.Add(triggerEntity);
-                await _joeContext.SaveChangesAsync();
+                _botContext.Triggers.Add(triggerEntity);
+                await _botContext.SaveChangesAsync();
 
                 result = true;
             }
@@ -60,7 +60,7 @@ namespace Joebot_Backend.Services
             bool result = false;
             try
             {
-                var triggerEntity = await _joeContext.Triggers
+                var triggerEntity = await _botContext.Triggers
                     .Include(c => c.TriggerWords)
                     .Include(c => c.TriggerResponses)
                     .Include(c => c.ReactEmotes)
@@ -106,7 +106,7 @@ namespace Joebot_Backend.Services
                     triggerEntity.TriggerResponses.Add(new TriggerResponse { Value = triggerResponseValue });
                 }
 
-                await _joeContext.SaveChangesAsync();
+                await _botContext.SaveChangesAsync();
 
                 result = true;
             }
@@ -125,7 +125,7 @@ namespace Joebot_Backend.Services
             TriggerDTO? triggerResult = null;
             try
             {
-                var triggerEntity = await _joeContext.Triggers
+                var triggerEntity = await _botContext.Triggers
                     .Include(c => c.TriggerWords)
                     .Include(c => c.TriggerResponses)
                     .Include(c => c.ReactEmotes)
@@ -154,7 +154,7 @@ namespace Joebot_Backend.Services
             bool result = false;
             try
             {
-                var statusEntity = await _joeContext.Triggers
+                var statusEntity = await _botContext.Triggers
                     .Include(c => c.TriggerWords)
                     .Include(c => c.TriggerResponses)
                     .Include(c => c.ReactEmotes)
@@ -165,8 +165,8 @@ namespace Joebot_Backend.Services
                     throw new Exception("Trigger does not exist");
                 }
 
-                _joeContext.Triggers.Remove(statusEntity);
-                await _joeContext.SaveChangesAsync();
+                _botContext.Triggers.Remove(statusEntity);
+                await _botContext.SaveChangesAsync();
 
                 result = true;
             }
@@ -184,7 +184,7 @@ namespace Joebot_Backend.Services
         {
             try
             {
-                var triggerEntities = await _joeContext.Triggers
+                var triggerEntities = await _botContext.Triggers
                     .Include(c => c.TriggerWords)
                     .Include(c => c.TriggerResponses)
                     .Include(c => c.ReactEmotes)

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Joebot_Backend.Database
+namespace DatabaseMigrations
 {
     /// <inheritdoc />
     public partial class InitialMigration : Migration
@@ -23,8 +23,7 @@ namespace Joebot_Backend.Database
                     KickCacheDays = table.Column<int>(type: "int", nullable: false),
                     KickCacheHours = table.Column<int>(type: "int", nullable: false),
                     KickCacheServerMessage = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    KickServerMessage = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    KickUserMessage = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    KickCacheUserMessage = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
