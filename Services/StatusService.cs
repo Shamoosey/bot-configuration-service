@@ -1,23 +1,19 @@
 ﻿using AutoMapper;
-using Joebot_Backend.Database;
-using Joebot_Backend.Database.Models;
-using Joebot_Backend.DTOs;
+using DiscordBot_Backend.Database;
+using DiscordBot_Backend.Database.Models;
+using DiscordBot_Backend.DTOs;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Joebot_Backend.Services
+namespace DiscordBot_Backend.Services
 {
     public class StatusService : IStatusService
     {
-        private readonly JoeContext _joeContext;
+        private readonly BotContext _botContext;
         private readonly IMapper _mapper;
 
-        public StatusService(JoeContext joeContext, IMapper mapper)
+        public StatusService(BotContext botContext, IMapper mapper)
         {
-            _joeContext = joeContext;
+            _botContext = botContext;
             _mapper = mapper;
         }
 
@@ -32,8 +28,8 @@ namespace Joebot_Backend.Services
                     Status = statusMessage,
                     Type = statusType
                 };
-                _joeContext.StatusMessages.Add(statusEntity);
-                await _joeContext.SaveChangesAsync();
+                _botContext.StatusMessages.Add(statusEntity);
+                await _botContext.SaveChangesAsync();
 
                 result = true;
             }
@@ -52,15 +48,15 @@ namespace Joebot_Backend.Services
             bool result = false;
             try
             {
-                var statusEntity = await _joeContext.StatusMessages.FindAsync(id);
+                var statusEntity = await _botContext.StatusMessages.FindAsync(id);
 
                 if (statusEntity == null)
                 {
                     throw new Exception("Status does not exist");
                 }
 
-                _joeContext.StatusMessages.Remove(statusEntity);
-                await _joeContext.SaveChangesAsync();
+                _botContext.StatusMessages.Remove(statusEntity);
+                await _botContext.SaveChangesAsync();
 
                 result = true;
             }
@@ -78,7 +74,7 @@ namespace Joebot_Backend.Services
         {
             try
             {
-                var statusEntities = await _joeContext.StatusMessages.ToListAsync();
+                var statusEntities = await _botContext.StatusMessages.ToListAsync();
                 var statusDTOs = _mapper.Map<List<StatusMessageDTO>>(statusEntities);
 
                 return statusDTOs;

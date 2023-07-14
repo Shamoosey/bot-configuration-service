@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Joebot_Backend.DTOs
+namespace DiscordBot_Backend.DTOs
 {
     public class ConfigurationDTO
     {

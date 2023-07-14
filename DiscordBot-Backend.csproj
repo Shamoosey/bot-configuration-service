@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>Joebot_Backend</RootNamespace>
+    <RootNamespace>DiscordBot_Backend</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
