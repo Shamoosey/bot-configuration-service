@@ -19,9 +19,9 @@ namespace DiscordBot_Backend.Controllers
 
         [Route("GetAll")]
         [HttpGet]
-        public async Task<List<TriggerDTO>> GetTriggers(string serverId, CancellationToken cancellationToken)
+        public async Task<List<TriggerDTO>> GetTriggers(Guid configId, CancellationToken cancellationToken)
         {
-            return await _triggerService.GetTriggers(serverId);
+            return await _triggerService.GetTriggers(configId);
         }
 
         [Route("Get")]
@@ -47,7 +47,7 @@ namespace DiscordBot_Backend.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateTrigger(Guid triggerId, TriggerDTO TriggerDTO, CancellationToken cancellationToken)
+        public async Task<ActionResult> UpdateTrigger(Guid triggerId, UpdateTriggerDTO TriggerDTO, CancellationToken cancellationToken)
         {
             var result = await this._triggerService.UpdateTrigger(triggerId, TriggerDTO);
 
@@ -62,9 +62,9 @@ namespace DiscordBot_Backend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateTrigger(string serverId, TriggerDTO trigger, CancellationToken cancellationToken)
+        public async Task<ActionResult> CreateTrigger(Guid configId, UpdateTriggerDTO trigger, CancellationToken cancellationToken)
         {
-            var result = await this._triggerService.CreateTrigger(serverId, trigger);
+            var result = await this._triggerService.CreateTrigger(configId, trigger);
 
             if(result)
             {

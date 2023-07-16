@@ -13,14 +13,16 @@ namespace DiscordBot_Backend
                 .ForMember(dest => dest.Triggers, opt => opt.MapFrom(src => src.Triggers))
                 .ReverseMap();
 
+            CreateMap<UpdateConfigurationDTO, Configuration>().ReverseMap();
+
             CreateMap<ConfigurationDTO, Configuration>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
 
-            CreateMap<StatusMessage, StatusMessageDTO>();
+            CreateMap<StatusMessage, StatusMessageDTO>().ReverseMap();
 
             CreateMap<UserDTO, User>().ReverseMap();
 
-            CreateMap<User, UserDTO>();
+            CreateMap<UpdateUserDTO, User>().ReverseMap();
 
             CreateMap<UserDTO, User>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
@@ -34,6 +36,7 @@ namespace DiscordBot_Backend
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
 
             CreateMap<TriggerDTO, Trigger>();
+            CreateMap<UpdateTriggerDTO, Trigger>().ReverseMap();
 
             CreateMap<string, TriggerWord>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))

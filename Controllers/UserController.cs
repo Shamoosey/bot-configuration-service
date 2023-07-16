@@ -20,9 +20,9 @@ namespace DiscordBot_Backend.Controllers
 
         [Route("GetAll")]
         [HttpGet]
-        public async Task<List<UserDTO>> GetAll(string serverId, CancellationToken cancellationToken)
+        public async Task<List<UserDTO>> GetAll(Guid configId, CancellationToken cancellationToken)
         {
-            return await _userService.GetUsers(serverId);
+            return await _userService.GetUsers(configId);
         }
 
         [Route("Get")]
@@ -48,9 +48,9 @@ namespace DiscordBot_Backend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateUser(UserDTO user, string serverId, CancellationToken cancellationToken)
+        public async Task<ActionResult> CreateUser(UpdateUserDTO user, Guid configId, CancellationToken cancellationToken)
         {
-            var result = await this._userService.CreateUser(user, serverId);
+            var result = await this._userService.CreateUser(user, configId);
 
             if(result)
             {
@@ -63,7 +63,7 @@ namespace DiscordBot_Backend.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateUser(Guid userId, UserDTO userDto, CancellationToken cancellationToken)
+        public async Task<ActionResult> UpdateUser(Guid userId, UpdateUserDTO userDto, CancellationToken cancellationToken)
         {
             var result = await this._userService.UpdateUser(userId, userDto);
 
