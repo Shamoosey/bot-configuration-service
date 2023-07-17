@@ -60,7 +60,7 @@ namespace DiscordBot_Backend.Controllers
             } 
             else
             {
-                return NotFound(result);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -75,7 +75,7 @@ namespace DiscordBot_Backend.Controllers
             } 
             else
             {
-                return NotFound();
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
         }

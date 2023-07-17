@@ -44,13 +44,16 @@ namespace DiscordBot_Backend.Services
             bool result = false;
             try
             {
-                var existingConfiguration = await _botContext.Configurations.FirstOrDefaultAsync(x => x.Id == configId);
+                var existingConfiguration = await _botContext.Configurations
+                    .FirstOrDefaultAsync(x => x.Id == configId);
+
                 if (existingConfiguration == null)
                 {
                     throw new Exception("Configuration doesn't exist");
                 }
 
                 _mapper.Map(configuration, existingConfiguration);
+
                 await _botContext.SaveChangesAsync();
                 result = true;
             } catch (Exception e)

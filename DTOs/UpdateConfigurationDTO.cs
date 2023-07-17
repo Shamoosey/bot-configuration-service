@@ -12,7 +12,5 @@ namespace DiscordBot_Backend.DTOs
         public int KickCacheHours { get; set; }
         public string KickCacheServerMessage { get; set; }
         public string KickCacheUserMessage { get; set; }
-        public virtual List<UpdateUserDTO> Users { get; set; }
-        public virtual List<UpdateTriggerDTO> Triggers { get; set; }
     }
 }

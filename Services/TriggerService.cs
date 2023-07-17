@@ -72,6 +72,7 @@ namespace DiscordBot_Backend.Services
                 }
 
                 // Update the properties of the trigger entity
+                triggerEntity.Name = editTrigger.Name;
                 triggerEntity.MessageDelete = editTrigger.MessageDelete;
                 triggerEntity.SendRandomResponse = editTrigger.SendRandomResponse;
                 triggerEntity.IgnoreCooldown = editTrigger.IgnoreCooldown;
