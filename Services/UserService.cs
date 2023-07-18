@@ -59,8 +59,9 @@ namespace DiscordBot_Backend.Services
                     throw new Exception("User does not exist");
                 }
 
-
-                _mapper.Map(userDto, userEntity);
+                userEntity.UserName= userDto.UserName;
+                userEntity.DiscordUserId = userDto.DiscordUserId;
+                userEntity.IsSecert = userDto.IsSecert;
                 await _botContext.SaveChangesAsync();
 
                 result = true;
