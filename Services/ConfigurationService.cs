@@ -9,11 +9,11 @@ namespace DiscordBot_Backend.Services
 {
     public class ConfigurationService : IConfigurationService
     {
-        private readonly ILogger<ConfigurationController> _logger;
+        private readonly ILogger<ConfigurationService> _logger;
         private readonly BotContext _botContext;
         private readonly IMapper _mapper;
 
-        public ConfigurationService(BotContext botContext, IMapper mapper, ILogger<ConfigurationController> logger)
+        public ConfigurationService(BotContext botContext, IMapper mapper, ILogger<ConfigurationService> logger)
         {
             _botContext = botContext;
             _mapper = mapper;
