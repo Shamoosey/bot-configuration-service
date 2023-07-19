@@ -22,9 +22,9 @@ namespace DiscordBot_Backend.Controllers
 
         [Route("Get")]
         [HttpGet]
-        public async Task<ConfigurationDTO?> GetConfiguration(string serverId, CancellationToken cancellationToken)
+        public async Task<ConfigurationDTO?> GetConfiguration(Guid id, CancellationToken cancellationToken)
         {
-            return await this._configurationService.GetConfiguration(serverId);
+            return await this._configurationService.GetConfiguration(id);
         }
 
         [Route("GetAll")]
@@ -35,7 +35,7 @@ namespace DiscordBot_Backend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateConfiguration(ConfigurationDTO configuration, CancellationToken cancellationToken)
+        public async Task<ActionResult> CreateConfiguration(UpdateConfigurationDTO configuration, CancellationToken cancellationToken)
         {
             var result = await this._configurationService.CreateConfiguration(configuration);
 
@@ -50,7 +50,7 @@ namespace DiscordBot_Backend.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateConfiguration(string id, ConfigurationDTO configuration, CancellationToken cancellationToken)
+        public async Task<ActionResult> UpdateConfiguration(Guid id, UpdateConfigurationDTO configuration, CancellationToken cancellationToken)
         {
             var result = await this._configurationService.UpdateConfiguration(id, configuration);
 
@@ -60,12 +60,12 @@ namespace DiscordBot_Backend.Controllers
             } 
             else
             {
-                return NotFound(result);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteConfiguration(string id, CancellationToken cancellationToken)
+        public async Task<ActionResult> DeleteConfiguration(Guid id, CancellationToken cancellationToken)
         {
             var result = await _configurationService.DeleteConfiguration(id);
 
@@ -75,7 +75,7 @@ namespace DiscordBot_Backend.Controllers
             } 
             else
             {
-                return NotFound();
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
         }

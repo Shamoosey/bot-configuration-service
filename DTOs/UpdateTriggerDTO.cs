@@ -1,9 +1,7 @@
 ﻿namespace DiscordBot_Backend.DTOs
 {
-    public class TriggerDTO
+    public class UpdateTriggerDTO
     {
-
-        public Guid? Id { get; set; }
         public string Name { get; set; }
         public bool MessageDelete { get; set; }
         public bool SendRandomResponse { get; set; }

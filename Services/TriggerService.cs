@@ -18,19 +18,19 @@ namespace DiscordBot_Backend.Services
             _mapper = mapper;
         }
 
-        public async Task<bool> CreateTrigger(string serverId, TriggerDTO Trigger)
+        public async Task<bool> CreateTrigger(Guid configId, UpdateTriggerDTO Trigger)
         {
             bool result = false;
             try
             {
-                var existingConfiguration = _botContext.Configurations.FirstOrDefault(x => x.ServerId == serverId);
+                var existingConfiguration = _botContext.Configurations.FirstOrDefault(x => x.Id == configId);
 
                 if (existingConfiguration == null) 
                 {
-                    throw new Exception($"No configuration associated with serverId: {serverId}");
+                    throw new Exception($"No configuration associated with id: {configId}");
                 }
 
-                var triggerEntity = _mapper.Map<TriggerDTO, Trigger>(Trigger);
+                var triggerEntity = _mapper.Map<UpdateTriggerDTO, Trigger>(Trigger);
                 var reactEmotes = _mapper.Map<List<ReactEmote>>(Trigger.ReactEmotes);
                 var triggerWords = _mapper.Map<List<TriggerWord>>(Trigger.TriggerWords);
                 var triggerResponses = _mapper.Map<List<TriggerResponse>>(Trigger.TriggerResponses);
@@ -55,7 +55,7 @@ namespace DiscordBot_Backend.Services
             return result;
         }
 
-        public async Task<bool> UpdateTrigger(Guid id, TriggerDTO editTrigger)
+        public async Task<bool> UpdateTrigger(Guid id, UpdateTriggerDTO editTrigger)
         {
             bool result = false;
             try
@@ -72,6 +72,7 @@ namespace DiscordBot_Backend.Services
                 }
 
                 // Update the properties of the trigger entity
+                triggerEntity.Name = editTrigger.Name;
                 triggerEntity.MessageDelete = editTrigger.MessageDelete;
                 triggerEntity.SendRandomResponse = editTrigger.SendRandomResponse;
                 triggerEntity.IgnoreCooldown = editTrigger.IgnoreCooldown;
@@ -154,18 +155,18 @@ namespace DiscordBot_Backend.Services
             bool result = false;
             try
             {
-                var statusEntity = await _botContext.Triggers
+                var triggerEntity = await _botContext.Triggers
                     .Include(c => c.TriggerWords)
                     .Include(c => c.TriggerResponses)
                     .Include(c => c.ReactEmotes)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
-                if (statusEntity == null)
+                if (triggerEntity == null)
                 {
                     throw new Exception("Trigger does not exist");
                 }
 
-                _botContext.Triggers.Remove(statusEntity);
+                _botContext.Triggers.Remove(triggerEntity);
                 await _botContext.SaveChangesAsync();
 
                 result = true;
@@ -180,7 +181,7 @@ namespace DiscordBot_Backend.Services
             return result;
         }
 
-        public async Task<List<TriggerDTO>> GetTriggers(string serverId)
+        public async Task<List<TriggerDTO>> GetTriggers(Guid configId)
         {
             try
             {
@@ -188,7 +189,7 @@ namespace DiscordBot_Backend.Services
                     .Include(c => c.TriggerWords)
                     .Include(c => c.TriggerResponses)
                     .Include(c => c.ReactEmotes)
-                    .Where(x => x.Configuration.ServerId == serverId)
+                    .Where(x => x.Configuration.Id == configId)
                     .ToListAsync();
                 var triggerDTOs = _mapper.Map<List<Trigger>, List<TriggerDTO>>(triggerEntities);
 
@@ -205,10 +206,10 @@ namespace DiscordBot_Backend.Services
 
     public interface ITriggerService
     {
-        public Task<bool> CreateTrigger(string serverId, TriggerDTO Trigger);
+        public Task<bool> CreateTrigger(Guid configId, UpdateTriggerDTO Trigger);
         public Task<bool> DeleteTrigger(Guid id);
-        public Task<bool> UpdateTrigger(Guid id, TriggerDTO TriggerDTO);
-        public Task<List<TriggerDTO>> GetTriggers(string serverId);
+        public Task<bool> UpdateTrigger(Guid id, UpdateTriggerDTO TriggerDTO);
+        public Task<List<TriggerDTO>> GetTriggers(Guid configId);
         public Task<TriggerDTO> GetTrigger(Guid id);
     }
 }

@@ -17,16 +17,16 @@ namespace DiscordBot_Backend.Services
             _mapper = mapper;
         }
 
-        public async Task<bool> CreateUser(UserDTO userDto, string serverId)
+        public async Task<bool> CreateUser(UpdateUserDTO userDto, Guid configId)
         {
             bool result = false;
             try
             {
-                var existingConfiguration = await _botContext.Configurations.FirstOrDefaultAsync(x => x.ServerId == serverId);
+                var existingConfiguration = await _botContext.Configurations.FirstOrDefaultAsync(x => x.Id == configId);
 
                 if(existingConfiguration == null) 
                 {
-                    throw new Exception($"No configuration exists with serverId {serverId}");
+                    throw new Exception($"No configuration exists with id {configId}");
                 }
 
                 var userEntity = _mapper.Map<User>(userDto);
@@ -47,7 +47,7 @@ namespace DiscordBot_Backend.Services
         }
 
 
-        public async Task<bool> UpdateUser(Guid userId, UserDTO userDto)
+        public async Task<bool> UpdateUser(Guid userId, UpdateUserDTO userDto)
         {
             bool result = false;
             try
@@ -59,8 +59,9 @@ namespace DiscordBot_Backend.Services
                     throw new Exception("User does not exist");
                 }
 
-
-                _mapper.Map(userDto, userEntity);
+                userEntity.UserName= userDto.UserName;
+                userEntity.DiscordUserId = userDto.DiscordUserId;
+                userEntity.IsSecert = userDto.IsSecert;
                 await _botContext.SaveChangesAsync();
 
                 result = true;
@@ -125,11 +126,11 @@ namespace DiscordBot_Backend.Services
             return userDto;
         }
 
-        public async Task<List<UserDTO>> GetUsers(string serverId)
+        public async Task<List<UserDTO>> GetUsers(Guid configId)
         {
             try
             {
-                var userEntities = await _botContext.Users.Where(x => x.Configuration.ServerId == serverId).ToListAsync();
+                var userEntities = await _botContext.Users.Where(x => x.Configuration.Id == configId).ToListAsync();
                 var userDtos = _mapper.Map<List<User>, List<UserDTO>>(userEntities);
 
                 return userDtos;
@@ -143,10 +144,10 @@ namespace DiscordBot_Backend.Services
 
     public interface IUserService
     {
-        public Task<bool> CreateUser(UserDTO User, string serverId);
-        public Task<bool> UpdateUser(Guid userId, UserDTO User);
+        public Task<bool> CreateUser(UpdateUserDTO User, Guid configId);
+        public Task<bool> UpdateUser(Guid userId, UpdateUserDTO User);
         public Task<bool> DeleteUser(Guid userId);
         public Task<UserDTO> GetUser(Guid userId);
-        public Task<List<UserDTO>> GetUsers(string serverId);
+        public Task<List<UserDTO>> GetUsers(Guid configId);
     }
 }
