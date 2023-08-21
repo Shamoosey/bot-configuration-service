@@ -17,8 +17,9 @@ namespace DiscordBot_Backend.Controllers
             _statusService = statusService;
         }
 
+        [Route("GetAll")]
         [HttpGet]
-        public async Task<List<StatusMessageDTO>> GetConfiguration(CancellationToken cancellationToken)
+        public async Task<List<StatusMessageDTO>> GetAll(CancellationToken cancellationToken)
         {
             return await _statusService.GetStatusMessages();
         }

@@ -31,10 +31,14 @@ builder.Services.AddDbContext<BotContext>(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngularFrontend",
+    options.AddPolicy("AllowBot",
         builder =>
         {
             builder.WithOrigins(configuration["AngularAppUrl"])
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+
+            builder.WithOrigins(configuration["JoeBotUrl"])
                    .AllowAnyMethod()
                    .AllowAnyHeader();
         });
@@ -52,10 +56,10 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.UseCors("AllowAngularFrontend");
+app.UseCors("AllowBot");
 
 app.MapControllers();
 
 string port = configuration["Application:Port"];
 
-app.Run($"https://localhost:{port}");
+app.Run($"http://localhost:{port}");
