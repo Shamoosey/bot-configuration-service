@@ -2,7 +2,10 @@ using AutoMapper;
 using DiscordBot_Backend;
 using DiscordBot_Backend.Database;
 using DiscordBot_Backend.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +31,19 @@ builder.Services.AddDbContext<BotContext>(options =>
     options.UseSqlServer(configuration["ConnectionStrings:DefaultConnection"]
 ));
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.Authority = configuration["Authentication:Domain"];
+    options.Audience = configuration["Authentication:Audience"];
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        NameClaimType = ClaimTypes.NameIdentifier
+    };
+});
 
 builder.Services.AddCors(options =>
 {
@@ -45,10 +61,13 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
+    app.UseDeveloperExceptionPage();
     app.UseSwaggerUI(x => x.SwaggerEndpoint("/swagger/v1/swagger.json", "Configuration Service v1"));
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

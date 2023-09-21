@@ -1,11 +1,13 @@
 using DiscordBot_Backend.Database.Models;
 using DiscordBot_Backend.DTOs;
 using DiscordBot_Backend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DiscordBot_Backend.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
