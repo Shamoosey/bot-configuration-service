@@ -1,10 +1,12 @@
 using DiscordBot_Backend.DTOs;
 using DiscordBot_Backend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DiscordBot_Backend.Controllers
 {
     [ApiController]
+    [Authorize("read:configurations")]
     [Route("[controller]")]
     public class ConfigurationController : ControllerBase
     {
@@ -29,12 +31,14 @@ namespace DiscordBot_Backend.Controllers
 
         [Route("GetAll")]
         [HttpGet]
-        public async Task<IEnumerable<ConfigurationDTO>> GetConfigurations(CancellationToken cancellationToken)
+        [AllowAnonymous]
+        public async Task<IEnumerable<ConfigurationDTO>> GetConfigurations([FromBody] List<string> configs, CancellationToken cancellationToken)
         {
-            return await this._configurationService.GetAllConfigurations();
+            return await this._configurationService.GetConfigurations(configs);
         }
 
         [HttpPost]
+        [Authorize("create:configurations")]
         public async Task<ActionResult> CreateConfiguration(UpdateConfigurationDTO configuration, CancellationToken cancellationToken)
         {
             var result = await this._configurationService.CreateConfiguration(configuration);
@@ -50,6 +54,7 @@ namespace DiscordBot_Backend.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize("edit:configurations")]
         public async Task<ActionResult> UpdateConfiguration(Guid id, UpdateConfigurationDTO configuration, CancellationToken cancellationToken)
         {
             var result = await this._configurationService.UpdateConfiguration(id, configuration);
@@ -65,6 +70,7 @@ namespace DiscordBot_Backend.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize("delete:configurations")]
         public async Task<ActionResult> DeleteConfiguration(Guid id, CancellationToken cancellationToken)
         {
             var result = await _configurationService.DeleteConfiguration(id);

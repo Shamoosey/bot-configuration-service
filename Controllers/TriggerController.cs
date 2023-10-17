@@ -1,11 +1,14 @@
 using DiscordBot_Backend.DTOs;
 using DiscordBot_Backend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DiscordBot_Backend.Controllers
 {
     [ApiController]
+    [Authorize("read:configurations")]
     [Route("[controller]")]
+
     public class TriggerController : ControllerBase
     {
         private readonly ILogger<TriggerController> _logger;
@@ -32,6 +35,7 @@ namespace DiscordBot_Backend.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize("edit:configurations")]
         public async Task<ActionResult> DeleteTrigger(Guid id, CancellationToken cancellationToken)
         {
             var result = await this._triggerService.DeleteTrigger(id);
@@ -47,6 +51,7 @@ namespace DiscordBot_Backend.Controllers
         }
 
         [HttpPut]
+        [Authorize("edit:configurations")]
         public async Task<ActionResult> UpdateTrigger(Guid triggerId, UpdateTriggerDTO TriggerDTO, CancellationToken cancellationToken)
         {
             var result = await this._triggerService.UpdateTrigger(triggerId, TriggerDTO);
@@ -62,6 +67,7 @@ namespace DiscordBot_Backend.Controllers
         }
 
         [HttpPost]
+        [Authorize("edit:configurations")]
         public async Task<ActionResult> CreateTrigger(Guid configId, UpdateTriggerDTO trigger, CancellationToken cancellationToken)
         {
             var result = await this._triggerService.CreateTrigger(configId, trigger);
