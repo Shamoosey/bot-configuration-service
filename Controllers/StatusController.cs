@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DiscordBot_Backend.Controllers
 {
     [ApiController]
-    [Authorize]
+    [Authorize("read:configurations")]
     [Route("[controller]")]
     public class StatusController : ControllerBase
     {

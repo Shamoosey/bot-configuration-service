@@ -77,13 +77,14 @@ namespace DiscordBot_Backend.Services
             return _mapper.Map<ConfigurationDTO>(configuration);
         }
 
-        public async Task<IEnumerable<ConfigurationDTO>> GetAllConfigurations()
+        public async Task<IEnumerable<ConfigurationDTO>> GetConfigurations(List<string> configs)
         {
             var configuration = await _botContext.Configurations
                 .Include(c => c.Users)
                 .Include(c => c.Triggers).ThenInclude(x => x.TriggerResponses)
                 .Include(c => c.Triggers).ThenInclude(x => x.TriggerWords)
                 .Include(c => c.Triggers).ThenInclude(x => x.ReactEmotes)
+                .Where(c => configs.Contains(c.ServerId.Trim()))
                 .ToListAsync();
 
             return _mapper.Map<IEnumerable<ConfigurationDTO>>(configuration);
@@ -116,7 +117,7 @@ namespace DiscordBot_Backend.Services
 
     public interface IConfigurationService
     {
-        Task<IEnumerable<ConfigurationDTO>> GetAllConfigurations();
+        Task<IEnumerable<ConfigurationDTO>> GetConfigurations(List<string> configs);
         Task<ConfigurationDTO> GetConfiguration(Guid configId);
         Task<bool> UpdateConfiguration(Guid configId, UpdateConfigurationDTO configuration);
         Task<bool> CreateConfiguration(UpdateConfigurationDTO configuration);

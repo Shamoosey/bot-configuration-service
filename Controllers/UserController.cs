@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DiscordBot_Backend.Controllers
 {
     [ApiController]
-    [Authorize]
+    [Authorize("read:configurations")]
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
@@ -35,6 +35,7 @@ namespace DiscordBot_Backend.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize("edit:configurations")]
         public async Task<ActionResult> DeleteUser(Guid id, CancellationToken cancellationToken)
         {
             var result = await this._userService.DeleteUser(id);
@@ -50,6 +51,7 @@ namespace DiscordBot_Backend.Controllers
         }
 
         [HttpPost]
+        [Authorize("edit:configurations")]
         public async Task<ActionResult> CreateUser(UpdateUserDTO user, Guid configId, CancellationToken cancellationToken)
         {
             var result = await this._userService.CreateUser(user, configId);
@@ -65,6 +67,7 @@ namespace DiscordBot_Backend.Controllers
         }
 
         [HttpPut]
+        [Authorize("edit:configurations")]
         public async Task<ActionResult> UpdateUser(Guid userId, UpdateUserDTO userDto, CancellationToken cancellationToken)
         {
             var result = await this._userService.UpdateUser(userId, userDto);
