@@ -1,0 +1,9 @@
+services:
+  bot-config-service:
+    container_name: config-service
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 55000
+    restart: always

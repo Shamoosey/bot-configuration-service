@@ -24,7 +24,7 @@ var configuration = new ConfigurationBuilder()
     .Build();
 
 builder.Services.AddAutoMapper(typeof(Program));
-builder.Services.AddSingleton<IMapper>(p => new MapperConfiguration(cfg => {
+builder.Services.AddSingleton(p => new MapperConfiguration(cfg => {
     cfg.AddProfile(new MappingProfile());
 }).CreateMapper());
 
@@ -63,7 +63,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAngularFrontend",
         builder =>
         {
-            builder.WithOrigins("http://localhost:4200")
+            builder.WithOrigins(configuration["AngularAppUrl"])
                    .AllowAnyMethod()
                    .AllowAnyHeader();
         });
@@ -87,4 +87,7 @@ app.UseAuthorization();
 app.UseCors("AllowAngularFrontend");
 
 app.MapControllers();
-app.Run();
+
+string port = configuration["Application:Port"];
+
+app.Run($"https://localhost:{port}");
