@@ -2,6 +2,8 @@ using DiscordBot_Backend.DTOs;
 using DiscordBot_Backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http.Headers;
+using System.Security.Claims;
 
 namespace DiscordBot_Backend.Controllers
 {
@@ -24,17 +26,24 @@ namespace DiscordBot_Backend.Controllers
 
         [Route("Get")]
         [HttpGet]
-        public async Task<ConfigurationDTO?> GetConfiguration(Guid id, CancellationToken cancellationToken)
+        public async Task<ActionResult> GetConfiguration(Guid id, CancellationToken cancellationToken)
         {
-            return await this._configurationService.GetConfiguration(id);
+            return Ok(await this._configurationService.GetConfiguration(id));
         }
 
         [Route("GetAll")]
         [HttpGet]
-        [AllowAnonymous]
-        public async Task<IEnumerable<ConfigurationDTO>> GetConfigurations([FromBody] List<string> configs, CancellationToken cancellationToken)
+        public async Task<ActionResult> GetConfigurations(CancellationToken cancellationToken)
         {
-            return await this._configurationService.GetConfigurations(configs);
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity != null)
+            {
+                IEnumerable<Claim> claims = identity.Claims;
+                var guilds = claims.Where(x => x.Type == "user_guilds").Select(x => x.Value).ToList();
+                return Ok(await this._configurationService.GetConfigurations(guilds));
+            }
+            
+            return StatusCode(StatusCodes.Status418ImATeapot);
         }
 
         [HttpPost]
