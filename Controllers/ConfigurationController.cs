@@ -40,14 +40,16 @@ namespace DiscordBot_Backend.Controllers
             {
                 IEnumerable<Claim> claims = identity.Claims;
                 var guilds = claims.Where(x => x.Type == "user_guilds").Select(x => x.Value).ToList();
-                return Ok(await this._configurationService.GetConfigurations(guilds));
+                var showAllEnabledString = claims.Where(x => x.Type == "show_all_guilds").Select(x => x.Value).FirstOrDefault() ?? "false";
+                bool showAllEnabled = Convert.ToBoolean(showAllEnabledString);
+                return Ok(await this._configurationService.GetConfigurations(guilds, showAllEnabled));
             }
             
             return StatusCode(StatusCodes.Status418ImATeapot);
         }
 
         [HttpPost]
-        [Authorize("create:configurations")]
+        [Authorize("edit:configurations")]
         public async Task<ActionResult> CreateConfiguration(UpdateConfigurationDTO configuration, CancellationToken cancellationToken)
         {
             var result = await this._configurationService.CreateConfiguration(configuration);
